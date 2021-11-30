@@ -1,16 +1,16 @@
 
 public class BookList {
-	private BookNode list;
-	private BookNode current;
+	private BookNode Head;
+	
 	
 	BookList(){
-		list = null;
+		this.Head = null;
 	}
 	
 	public String toString() {
 		String result = "";
 		
-		BookNode current = list;
+		BookNode current = Head;
 		while (current != null) {
 			result += current.book.getTitle();
 			current = current.next;
@@ -22,24 +22,31 @@ public class BookList {
 		try {
 			BookNode temp = new BookNode(b);
 			
-			BookNode current = list;
+			BookNode current = Head;
 			BookNode back = null;
 			boolean found = false;
 			
-			while(current != null && !found) {
+			if (Head == null) {
+			    Head = temp;
+			    found = true;
+			}
+			
+			while(!found) {
 				if (temp.book.getTitle().compareTo(current.book.getTitle())<0) {
+				    if (current == Head){
+				        temp.setNextNode(current);
+				        found = true;
+				        break;
+				    }
+				    temp.setNextNode(current);
+				    back.setNextNode(temp);
 					found = true;
+				} else if (current.getNextNode() == null){
+				    current.setNextNode(temp);
+				    found = true;
 				} else {
 					back = current;
-					current = current.getNextNode();
-				}
-				
-				temp.setNode(current);
-				
-				if (back == null) {
-					list = temp;
-				} else {
-					back.setNode(temp);
+					current = back.getNextNode();
 				}
 			}
 		} catch (NullPointerException e) {
@@ -50,7 +57,7 @@ public class BookList {
 	void remove(String title) {
 		try {
 			BookNode back = null;
-			current = list;
+			BookNode current = Head;
 			boolean found = false;
 			
 			while(current != null && !found) {
@@ -61,8 +68,8 @@ public class BookList {
 					current = current.getNextNode();
 				}
 				if(found) {
-					back.setNode(current.getNextNode());
-					current.setNode(null);
+					back.setNextNode(current.getNextNode());
+					current.setNextNode(null);
 				}
 			} 
 		} catch(NullPointerException e) {
