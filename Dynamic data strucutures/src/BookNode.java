@@ -12,5 +12,5 @@ public class BookNode {
 	
 	BookNode getNextNode() {return next;}
 	
-	void setNode(BookNode b) {next = b;}
+	void setNextNode(BookNode b) {next = b;}
 }
