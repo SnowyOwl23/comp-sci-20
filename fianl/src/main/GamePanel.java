@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
 	
 	final int originalTileSize = 16;
 	final int scale = 3;
@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread gameThread;
 	
 	int playerX = 100;
-	int playerY = 100;
+	int playerY = 500;
 	int playerSpeed = 4;
 	
 	public GamePanel() {
@@ -46,36 +46,40 @@ public class GamePanel extends JPanel implements Runnable{
 		double drawInterval = 1000000000/FPS;
 		double delta = 0;
 		long lastTime = System.nanoTime();
+		long currentTime;
 		
 		while(gameThread != null) {
-			long currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / drawInterval;
-			lastTime = currentTime;
 			
+			currentTime = System.nanoTime();
+			delta += (currentTime - lastTime) / drawInterval;
+			
+			lastTime = currentTime;
 			if (delta >= 1) {
 				update();
 				repaint();
 				delta--;
-				System.out.println(keyH.upPressed);
 			}
 		}
 	}
 	
-	public void update() {
+	public void update() throws InterruptedException {
 		
 		if (keyH.upPressed == true) {
-			playerY = playerY - playerSpeed;
+			playerY -= playerSpeed;
 			
 		} else if (keyH.downPressed == true) {
-			playerY = playerY + playerSpeed;
+			playerY += playerSpeed;
 			
-		} else if (keyH.rightPressed == true) {
-			playerX = playerX + playerSpeed;
-		
 		} else if (keyH.leftPressed == true) {
-			playerX = playerX - playerSpeed;
+			playerX -= playerSpeed;
 		
+		} else if (keyH.rightPressed == true) {
+			playerX += playerSpeed;
+		
+		} else if (keyH.jump == true) {
+			
 		}
+		
 	}
 	
 	public void paintComponent(Graphics g) {
