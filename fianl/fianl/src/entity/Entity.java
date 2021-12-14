@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 	
-	public int x, y;
+	public int worldX, worldY;
 	public int speed;
 	
 	public BufferedImage still;
-	public String direction;
+	public String[] direction = new String[2];
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;

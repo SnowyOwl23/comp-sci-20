@@ -15,7 +15,8 @@ public class Player extends Entity{
 	
 	GamePanel gp;
 	KeyHandler keyH;
-	int jumpSpeed = 6;
+	int jumpSpeed = 6; 
+	public String[] previousDirection;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
@@ -30,10 +31,14 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 	
-		x = 720;
-		y = 400;
+		worldX = 720;
+		worldY = 400;
 		speed = 4;
-		direction = "still";
+		direction[0] = "still";
+	}
+	
+	public Rectangle getHitBox() {
+		return hitBox;
 	}
 	
 //	public void getPlayerImage() {
@@ -46,49 +51,66 @@ public class Player extends Entity{
 	
 	public void update(int count) {
 		
+		previousDirection = direction;
 		
-		
-		if (keyH.upPressed == true) {
-			//direction = "still";
-			y -= speed;
-			
-		} else if (keyH.leftPressed == true) {
-			direction = "still";
-			x -= speed;
+		if (keyH.leftPressed == true) {
+			direction[0] = "left";
 		
 		} else if (keyH.rightPressed == true) {
-			direction = "still";
-			x += speed;
+			direction[0] = "right";
 		
-		}  
+		} else if (keyH.leftPressed == false && keyH.rightPressed == false) {
+			direction[0] = "still";
+		}
 			
 		if (keyH.jump == true) {
-			if (count < 20) {
-				y -= jumpSpeed;
-				gp.count ++;
-			} else {
-				keyH.jump = false;
-			}
+			direction[1] = "jump";
+			
 		} else if (keyH.jump == false) {
-			if (count > 0){
-				y += jumpSpeed;
-				gp.count --;
-			} else {
-				keyH.jump = false;
-				gp.count = 0;
-			}
+			direction[1] = null;
+			
 		}
 		
 		collisionOn = false;
-		gp.cChecker.checkTile(this);
+		gp.cChecker.check(this, gp.obstacle);
+		
+		if (collisionOn == false) {
+			
+			if (direction[0] == "left") {
+				worldX -= speed;
+				
+			} else if (direction [0] == "right") {
+				worldX += speed;
+			}
+			
+			if (direction[1] == "jump") {
+				if (count < 20) {
+					worldY -= jumpSpeed;
+					gp.count ++;
+				} else {
+					keyH.jump = false;
+				}
+			} else {
+				if (count > 0){
+					worldY += jumpSpeed;
+					gp.count --;
+				} else {
+					keyH.jump = false;
+					gp.count = 0;
+				}
+			}
+			
+		}
+		
+		System.out.println(collisionOn);
 	}
 	
 	public void draw(Graphics2D g2) {
 
 		g2.setColor(Color.red);
-		g2.fillRect(x, y, gp.tileSize, gp.tileSize);
+		g2.fillRect(worldX, worldY, gp.tileSize, gp.tileSize);
 		
-		g2.drawRect(x, y, gp.tileSize, gp.tileSize);
+		g2.drawRect(worldX, worldY, gp.tileSize, gp.tileSize);
 //		BufferedImage image = null;
 //		
 //		switch(direction) {

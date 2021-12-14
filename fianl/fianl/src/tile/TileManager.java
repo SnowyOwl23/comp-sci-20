@@ -5,12 +5,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import entity.Obstacle;
 import main.GamePanel;
 
 public class TileManager {
 
 	GamePanel gp;
-	Tile[] tile;
+	public Tile[] tile;
+	public int[][] mapTileNum;
 	
 	public TileManager(GamePanel gp) {
 		
@@ -36,8 +38,11 @@ public class TileManager {
 		
 	}
 	
+
+	
 	public void draw(Graphics2D g2) {
 		
 		g2.drawImage(tile[0].image, 500, 400, gp.tileSize, gp.tileSize, null);
 	}
+	
 }
