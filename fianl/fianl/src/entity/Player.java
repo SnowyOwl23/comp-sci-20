@@ -67,7 +67,11 @@ public class Player extends Entity{
 			direction[1] = "jump";
 			
 		} else if (keyH.jump == false) {
-			direction[1] = null;
+			if (gp.count > 0) {
+				direction[1] = "jumping";
+			} else {
+				direction[1] = null;
+			}
 			
 		}
 		
@@ -90,7 +94,7 @@ public class Player extends Entity{
 				} else {
 					keyH.jump = false;
 				}
-			} else {
+			} else  {
 				if (count > 0){
 					worldY += jumpSpeed;
 					gp.count --;
@@ -99,8 +103,38 @@ public class Player extends Entity{
 					gp.count = 0;
 				}
 			}
+
+			hitBox.setBounds(worldX, worldY, 48, 48);
 			
-		}
+			gp.cChecker.check(this, gp.obstacle);
+			
+			while (collisionOn) {
+			gp.cChecker.check(this, gp.obstacle);
+			
+			if (collisionOn) {
+				switch (previousDirection[0]) {
+				case "left":
+					worldX++;
+					break;
+				case "right":
+					worldX--;
+					break;
+				}
+				switch (previousDirection[1]) {
+				case "jumping":
+					if(gp.cChecker.check(this, gp.obstacle) == "bottom") {
+						gp.count = 0;
+						keyH.jump = false;
+						worldY--;
+					} else if (gp.cChecker.check(this, gp.obstacle) == "top") {
+						gp.count = 20;
+					}
+				}
+				hitBox.setBounds(worldX, worldY, 48, 48);
+			}
+			}
+			
+		} 
 		
 		System.out.println(collisionOn);
 	}

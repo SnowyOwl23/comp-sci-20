@@ -10,21 +10,15 @@ import tile.TileManager;
 public class Obstacle extends Entity {
 	GamePanel gp;
 
-	public Obstacle(GamePanel gp) {
+	public Obstacle(GamePanel gp, int x, int y, int width, int height) {
 
 		this.gp = gp;
 
-		hitBox = new Rectangle(0, 0, 48, 48);
+		hitBox = new Rectangle(x, y, width, height);
 
-		setDefaultValues();
+		worldX = x;
+		worldY = y;
 	}
-	
-	public void setDefaultValues() {
-		
-		worldX = 500;
-		worldY = 400;
-	}
-	
 	
 	public void draw(Graphics2D g2) {
 

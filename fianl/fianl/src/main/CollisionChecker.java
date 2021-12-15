@@ -12,37 +12,37 @@ public class CollisionChecker {
 		this.gp = gp;
 	}
 	
-	public void check(Entity entity, Entity entity2) {
+	public String check(Entity entity, Entity entity2) {
 		
-		int entityLeftWorldX = entity.worldX + entity.hitBox.x;
-		int entityRightWorldX = entity.worldX + entity.hitBox.x + entity.hitBox.width;
-		int entityTopWorldY = entity.worldY + entity.hitBox.y;
-		int entityBottomWorldY = entity.worldY + entity.hitBox.y + entity.hitBox.height;
+		int entityBottom = entity.hitBox.y + entity.hitBox.height;
+		int entityTop = entity.hitBox.y;
+		int entityLeft = entity.hitBox.x;
+		int entityRight = entity.hitBox.x + entity.hitBox.width;
 		
-		int entityLeftColumn = entityLeftWorldX/gp.tileSize;
-		int entityRightColumn = entityRightWorldX/gp.tileSize;
-		int entityTopRow = entityTopWorldY/gp.tileSize;
-		int entityBottomRow = entityBottomWorldY/gp.tileSize;
+		int entityMiddleAcross = entity.hitBox.height/2;  
+		int entityMiddleUp = entity.hitBox.width/2;
 		
-		int entity2LeftWorldX = entity2.worldX + entity2.hitBox.x;
-		int entity2RightWorldX = entity2.worldX + entity2.hitBox.x + entity2.hitBox.width;
-		int entity2TopWorldY = entity.worldY + entity.hitBox.y;
-		int entity2BottomWorldY = entity2.worldY + entity2.hitBox.y + entity2.hitBox.height;
+		int entity2Bottom = entity2.hitBox.y + entity2.hitBox.height;
+		int entity2Top = entity2.hitBox.y;
+		int entity2Left = entity2.hitBox.x;
+		int entity2Right = entity2.hitBox.x + entity2.hitBox.width;
 		
-		int entity2LeftColumn = entity2LeftWorldX/gp.tileSize;
-		int entity2RightColumn = entity2RightWorldX/gp.tileSize;
-		int entity2TopRow = entity2TopWorldY/gp.tileSize;
-		int entity2BottomRow = entity2BottomWorldY/gp.tileSize;
+		int entity2MiddleAcross = entity2.hitBox.height/2;  
+		int entity2MiddleUp = entity2.hitBox.width/2;
 		
-		if (entity.hitBox.intersects(entity2.hitBox)) {
+		
+		if (entity.hitBox.intersects(500, 400, 48, 48)) {
 			entity.collisionOn = true;
-//			if (entityTopRow < entity2TopRow) {
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		} else {
-//			return false;
+			if (entityBottom > entity2Top && entityBottom < entity2Bottom) {
+				return "bottom";
+			} else if (entityTop < entity2Bottom && entityTop > entity2Top) {
+				return "top";
+			} else {
+				return null;
+			}
+		} else {
+			entity.collisionOn = false;
+			return null;
 		}
 	}
 	
