@@ -11,17 +11,24 @@ import entity.Entity;
 import entity.Obstacle;
 import entity.Player;
 import tile.TileManager;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements Runnable {
 	
-	final int originalTileSize = 16;
-	final int scale = 3;
 	
-	public final int tileSize = originalTileSize * scale;
-	final int maxScreenColumn = 16;
-	final int maxScreenRow = 12;
-	final int screenWidth = tileSize * maxScreenColumn;
-	final int screenHeight = tileSize *  maxScreenRow;
+	
+	
+	public int panel = 1;
+	BufferedImage bg;
+	
+	
+	
+	public final int tileSize = 48;
+	final int screenWidth = 960;
+	final int screenHeight = 540;
 
 	int FPS = 60;
 	
@@ -37,9 +44,26 @@ public class GamePanel extends JPanel implements Runnable {
 	int playerSpeed = 4;
 	public int count = -1;
 	
+	public BufferedImage bg(int panel, BufferedImage i) {
+		
+		if (panel == 1) {
+			try {
+				i = ImageIO.read(getClass().getResourceAsStream("/tiles/Background.jpg"));
+				return i;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return i;
+			}
+		} else {
+			return i;
+		}
+		
+		
+	}
+	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-		this.setBackground(Color.black);
+//		this.(bg, 0, 0, screenWidth, screenHeight, null);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
 		this.setFocusable(true);

@@ -37,6 +37,10 @@ public class CollisionChecker {
 				return "bottom";
 			} else if (entityTop < entity2Bottom && entityTop > entity2Top) {
 				return "top";
+			} else if (entityRight > entity2Left && entityRight < entity2Right){
+				return "right";
+			} else if (entityLeft < entity2Right && entityLeft > entity2Left) {
+				return "left";
 			} else {
 				return null;
 			}

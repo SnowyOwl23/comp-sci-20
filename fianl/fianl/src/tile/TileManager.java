@@ -12,7 +12,6 @@ public class TileManager {
 
 	GamePanel gp;
 	public Tile[] tile;
-	public int[][] mapTileNum;
 	
 	public TileManager(GamePanel gp) {
 		
@@ -30,7 +29,6 @@ public class TileManager {
 			tile[0] = new Tile();
 			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tester.jpg"));
 			tile[0].collision = true;
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

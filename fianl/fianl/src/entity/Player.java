@@ -18,6 +18,8 @@ public class Player extends Entity{
 	int jumpSpeed = 6; 
 	public String[] previousDirection;
 	
+	boolean onGround;
+	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
 		this.gp = gp;
@@ -109,34 +111,42 @@ public class Player extends Entity{
 			gp.cChecker.check(this, gp.obstacle);
 			
 			while (collisionOn) {
-			gp.cChecker.check(this, gp.obstacle);
-			
-			if (collisionOn) {
-				switch (previousDirection[0]) {
-				case "left":
-					worldX++;
-					break;
-				case "right":
-					worldX--;
-					break;
-				}
-				switch (previousDirection[1]) {
-				case "jumping":
-					if(gp.cChecker.check(this, gp.obstacle) == "bottom") {
-						gp.count = 0;
-						keyH.jump = false;
-						worldY--;
-					} else if (gp.cChecker.check(this, gp.obstacle) == "top") {
-						gp.count = 20;
+				gp.cChecker.check(this, gp.obstacle);
+
+				if (collisionOn) {
+					if (gp.cChecker.check(this, gp.obstacle) == "left") {
+						worldX++;
+						break;
+					}else if (gp.cChecker.check(this, gp.obstacle) == "right") {
+						worldX--;
+						break;
+					} else if (gp.cChecker.check(this, gp.obstacle) == "bottom") {
+						onGround = true;
+					}
+					if (previousDirection[1] == "jumping") {
+						if (gp.cChecker.check(this, gp.obstacle) == "bottom") {
+							gp.count = 0;
+							keyH.jump = false;
+							worldY--;
+						} else if (gp.cChecker.check(this, gp.obstacle) == "top") {
+							gp.count = 20;
+						}
+						hitBox.setBounds(worldX, worldY, 48, 48);
 					}
 				}
-				hitBox.setBounds(worldX, worldY, 48, 48);
 			}
-			}
-			
-		} 
+		}
 		
 		System.out.println(collisionOn);
+	}
+	
+	
+	public void checkGravity(boolean onGround) {
+		
+		if (onGround == false) {
+			
+			while (onGround)
+		}
 	}
 	
 	public void draw(Graphics2D g2) {
