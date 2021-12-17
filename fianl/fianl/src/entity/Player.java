@@ -53,7 +53,9 @@ public class Player extends Entity{
 	
 	public void update(int count) {
 		
-		previousDirection = direction;
+		if (direction[0] != "still") {
+			previousDirection = direction;
+		}
 		
 		if (keyH.leftPressed == true) {
 			direction[0] = "left";
@@ -77,8 +79,34 @@ public class Player extends Entity{
 			
 		}
 		
+		
+		checkCollisions(count);
+		
+		checkGravity(count);
+
+	}
+	
+	public void draw(Graphics2D g2) {
+
+		g2.setColor(Color.red);
+		g2.fillRect(worldX, worldY, gp.tileSize, gp.tileSize);
+		
+		g2.drawRect(worldX, worldY, gp.tileSize, gp.tileSize);
+//		BufferedImage image = null;
+//		
+//		switch(direction) {
+//			case "still":
+//				image = still;
+//				break;
+//		}
+//		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		
+	}
+	
+	public void checkCollisions(int count) {
+
 		collisionOn = false;
-		gp.cChecker.check(this, gp.obstacle);
+		gp.cChecker.checkCollisions(this, gp.surfaceM.tile[0]);
 		
 		if (collisionOn == false) {
 			
@@ -108,27 +136,25 @@ public class Player extends Entity{
 
 			hitBox.setBounds(worldX, worldY, 48, 48);
 			
-			gp.cChecker.check(this, gp.obstacle);
+			gp.cChecker.checkCollisions(this, gp.surfaceM.tile[0]);
 			
 			while (collisionOn) {
-				gp.cChecker.check(this, gp.obstacle);
+				gp.cChecker.checkCollisions(this, gp.surfaceM.tile[0]);
 
 				if (collisionOn) {
-					if (gp.cChecker.check(this, gp.obstacle) == "left") {
+					if (previousDirection[0] == "left") {
 						worldX++;
-						break;
-					}else if (gp.cChecker.check(this, gp.obstacle) == "right") {
+					} else if (previousDirection[0] == "right") {
 						worldX--;
-						break;
-					} else if (gp.cChecker.check(this, gp.obstacle) == "bottom") {
-						onGround = true;
 					}
+					hitBox.setBounds(worldX, worldY, 48, 48);
+					
 					if (previousDirection[1] == "jumping") {
-						if (gp.cChecker.check(this, gp.obstacle) == "bottom") {
+						if (gp.cChecker.checkCollisions(this, gp.surfaceM.tile[0]) == "bottom") {
 							gp.count = 0;
 							keyH.jump = false;
 							worldY--;
-						} else if (gp.cChecker.check(this, gp.obstacle) == "top") {
+						} else if (gp.cChecker.checkCollisions(this, gp.surfaceM.tile[0]) == "top") {
 							gp.count = 20;
 						}
 						hitBox.setBounds(worldX, worldY, 48, 48);
@@ -136,33 +162,14 @@ public class Player extends Entity{
 				}
 			}
 		}
-		
-		System.out.println(collisionOn);
 	}
-	
-	
-	public void checkGravity(boolean onGround) {
-		
-		if (onGround == false) {
-			
-			while (onGround)
-		}
-	}
-	
-	public void draw(Graphics2D g2) {
 
-		g2.setColor(Color.red);
-		g2.fillRect(worldX, worldY, gp.tileSize, gp.tileSize);
+	public void checkGravity(int count) {
 		
-		g2.drawRect(worldX, worldY, gp.tileSize, gp.tileSize);
-//		BufferedImage image = null;
-//		
-//		switch(direction) {
-//			case "still":
-//				image = still;
-//				break;
-//		}
-//		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-		
+		if (gp.gChecker.checkGravity(this, gp.surfaceM.tile[0]) == false && count == 0) {
+			while (gp.gChecker.checkGravity(this, gp.surfaceM.tile[0]) == false) {
+				worldY++;
+			}
+		}
 	}
 }

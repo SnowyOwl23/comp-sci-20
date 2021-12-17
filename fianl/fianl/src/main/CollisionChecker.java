@@ -3,6 +3,8 @@ package main;
 import java.awt.Rectangle;
 
 import entity.Entity;
+import entity.Player;
+import surfaces.Tile;
 
 public class CollisionChecker {
 
@@ -11,9 +13,8 @@ public class CollisionChecker {
 	public CollisionChecker(GamePanel gp) {
 		this.gp = gp;
 	}
-	
-	public String check(Entity entity, Entity entity2) {
-		
+
+	public String checkCollisions(Player entity, Tile entity2) {
 		int entityBottom = entity.hitBox.y + entity.hitBox.height;
 		int entityTop = entity.hitBox.y;
 		int entityLeft = entity.hitBox.x;
@@ -31,7 +32,7 @@ public class CollisionChecker {
 		int entity2MiddleUp = entity2.hitBox.width/2;
 		
 		
-		if (entity.hitBox.intersects(500, 400, 48, 48)) {
+		if (entity.hitBox.intersects(entity2.hitBox)) {
 			entity.collisionOn = true;
 			if (entityBottom > entity2Top && entityBottom < entity2Bottom) {
 				return "bottom";

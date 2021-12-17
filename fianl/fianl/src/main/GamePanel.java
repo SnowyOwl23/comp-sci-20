@@ -10,13 +10,18 @@ import javax.swing.JPanel;
 import entity.Entity;
 import entity.Obstacle;
 import entity.Player;
-import tile.TileManager;
+import surfaces.SurfaceManager;
+import surfaces.Tile;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements Runnable {
+	
+	
+
 	
 	
 	
@@ -26,15 +31,20 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	
 	
+	
+	
+	
+	
 	public final int tileSize = 48;
 	final int screenWidth = 960;
 	final int screenHeight = 540;
 
 	int FPS = 60;
 	
-	public TileManager tileM = new TileManager(this);
+	public SurfaceManager surfaceM = new SurfaceManager(this);
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
+	public GravityChecker gChecker = new GravityChecker(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	Player player = new Player(this, keyH);
 	public Obstacle obstacle = new Obstacle(this, 500, 400, 48, 48);
@@ -106,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		
-		obstacle.draw(g2);
+		surfaceM.draw(g2);
 		
 		player.draw(g2);
 		

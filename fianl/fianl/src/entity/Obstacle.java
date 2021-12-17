@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import main.GamePanel;
-import tile.TileManager;
 
 public class Obstacle extends Entity {
 	GamePanel gp;
